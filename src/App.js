@@ -1,6 +1,8 @@
-import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
+import { FormControl, IconButton, Input } from "@material-ui/core";
+import SendIcon from "@material-ui/icons/Send";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
+import FlipMove from "react-flip-move";
 import "./App.css";
 import db from "./Firebase";
 import Message from "./Message";
@@ -12,9 +14,11 @@ function App() {
 
   useEffect(() => {
     db.collection("messages")
-      .orderBy("timestamp", "desc")
+      .orderBy("timestamp", "asc")
       .onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map(doc => doc.data()));
+        setMessages(
+          snapshot.docs.map(doc => ({ id: doc.id, message: doc.data() }))
+        );
       });
   }, []);
 
@@ -35,30 +39,35 @@ function App() {
 
   return (
     <div className="App">
+      <img src="https://facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=100&h=100" />
       <h1>Messenger Clone with firebase</h1>
       <h2>Welcome {username}</h2>
-      <form>
-        <FormControl>
-          <InputLabel>Enter a message...</InputLabel>
+      <form className="app_form">
+        <FormControl className="app_formControl">
           <Input
+            className="app_input"
+            placeholder="Enter a message..."
             value={input}
             onChange={event => setInput(event.target.value)}
           />
-          <Button
+          <IconButton
+            className="app_iconButton"
             disabled={!input}
             variant="contained"
             type="submit"
             color="primary"
             onClick={sendMessage}
           >
-            Send Message
-          </Button>
+            <SendIcon />
+          </IconButton>
         </FormControl>
       </form>
 
-      {messages.map(message => (
-        <Message username={username} textMessage={message} />
-      ))}
+      <FlipMove>
+        {messages.map(({ id, message }) => (
+          <Message key={id} username={username} textMessage={message} />
+        ))}
+      </FlipMove>
     </div>
   );
 }

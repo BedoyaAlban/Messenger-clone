@@ -12,6 +12,7 @@ import db from "./Firebase";
 import Message from "./Message";
 
 function App() {
+  // Variables
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [username, setUserName] = useState("");
@@ -23,7 +24,7 @@ function App() {
       }
     }
   });
-
+  // Everytimes the DB change the new message will appear in the user side
   useEffect(() => {
     db.collection("messages")
       .orderBy("timestamp", "asc")
@@ -33,11 +34,11 @@ function App() {
         );
       });
   }, []);
-
+  // On load off the app
   useEffect(() => {
     setUserName(prompt("Please enter your name"));
   }, []);
-
+  // Sending message and clear the input
   const sendMessage = event => {
     event.preventDefault();
 

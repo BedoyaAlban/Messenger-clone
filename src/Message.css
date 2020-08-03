@@ -11,9 +11,13 @@
 }
 
 .message_userCard {
-    background-color: #0b81ff !important;
+    background-color: #3E9BF7 !important;
 }
 
 .message_noneUserCard {
     background-color: #e9e9eb !important;
+}
+
+.message_date {
+    padding-bottom: 0.5rem;
 }

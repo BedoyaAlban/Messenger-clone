@@ -1,5 +1,9 @@
 import { FormControl, IconButton, Input } from "@material-ui/core";
+import { blue } from "@material-ui/core/colors";
+import { createMuiTheme } from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
+import { ThemeProvider } from "@material-ui/styles";
+import DOMPurify from "dompurify";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import FlipMove from "react-flip-move";
@@ -11,6 +15,14 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [username, setUserName] = useState("");
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: blue[500]
+      }
+    }
+  });
 
   useEffect(() => {
     db.collection("messages")
@@ -39,35 +51,43 @@ function App() {
 
   return (
     <div className="App">
-      <img src="https://facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=100&h=100" />
+      <img
+        className="app_img"
+        src="https://facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=100&h=100"
+        alt="facebook messenger logo"
+      />
       <h1>Messenger Clone with firebase</h1>
       <h2>Welcome {username}</h2>
+      <div className="app_messages">
+        <FlipMove>
+          {messages.map(({ id, message }) => (
+            <Message key={id} username={username} textMessage={message} />
+          ))}
+        </FlipMove>
+      </div>
       <form className="app_form">
         <FormControl className="app_formControl">
           <Input
             className="app_input"
+            disableUnderline={true}
             placeholder="Enter a message..."
-            value={input}
+            value={DOMPurify.sanitize(input)}
             onChange={event => setInput(event.target.value)}
           />
-          <IconButton
-            className="app_iconButton"
-            disabled={!input}
-            variant="contained"
-            type="submit"
-            color="primary"
-            onClick={sendMessage}
-          >
-            <SendIcon />
-          </IconButton>
+          <ThemeProvider theme={theme}>
+            <IconButton
+              className="app_iconButton"
+              disabled={!input}
+              variant="contained"
+              type="submit"
+              color="primary"
+              onClick={sendMessage}
+            >
+              <SendIcon />
+            </IconButton>
+          </ThemeProvider>
         </FormControl>
       </form>
-
-      <FlipMove>
-        {messages.map(({ id, message }) => (
-          <Message key={id} username={username} textMessage={message} />
-        ))}
-      </FlipMove>
     </div>
   );
 }

@@ -4,21 +4,26 @@
 
 .app_form {
   text-align: center;
-  position: fixed;
-  bottom: 0px;
   z-index: 1;
-  background-color: #e9e9eb;
   width: 90%;
   margin: 20px;
+}
+
+.app_img {
+  margin-top: 20px;
 }
 
 .app_formControl {
   display: flex !important;
   flex-direction: row !important;
 }
-
+.app_formControl:hover {
+  cursor: pointer;
+}
 .app_input {
   flex: 1;
+  background-color: #e9e9eb !important;
+  border-radius: 20px !important;
 }
 
 .app_iconButton {

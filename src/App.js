@@ -4,7 +4,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import { ThemeProvider } from "@material-ui/styles";
 import DOMPurify from "dompurify";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 import FlipMove from "react-flip-move";
 import "./App.css";
